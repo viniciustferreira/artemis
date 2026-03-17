@@ -12,6 +12,13 @@
   </div>
 
   <% if @last_checked_moon %>
+    <% phase_key = @last_checked_moon.dig(:api_response, :phase, :name).to_s.downcase.tr(" ", "_") %>
+    <% phase_css = phase_key.present? ? phase_key.tr("_", "-") : "full-moon" %>
+    <% full_days = (@last_checked_moon[:days_until_full_moon] || 0).to_i %>
+    <% new_days = (@last_checked_moon[:days_until_new_moon] || 0).to_i %>
+    <% full_progress = [[full_days.fdiv(29.53) * 100, 100].min, 0].max %>
+    <% new_progress = [[new_days.fdiv(29.53) * 100, 100].min, 0].max %>
+
     <!-- Header -->
     <header class="app-header">
       <h1>🌙 Artemis</h1>
@@ -19,9 +26,9 @@
     </header>
 
     <!-- Moon Card -->
-    <div class="moon-card phase-<%= @last_checked_moon[:phase]&.parameterize || 'full' %>">
+    <div class="moon-card phase-<%= phase_css %>">
       <!-- Moon Visual -->
-      <div class="moon-visual"></div>
+      <div class="moon-visual moon-<%= phase_css %>"></div>
 
       <!-- Moon Data Grid -->
       <div class="moon-data-grid">
@@ -61,7 +68,7 @@
           </div>
           <div class="progress-container">
             <div class="progress-bar">
-              <div class="progress-fill" style="width: <%= ((@last_checked_moon[:days_until_full_moon] || 0) / 14.0) * 100 %>%;"></div>
+              <div class="progress-fill" style="width: <%= full_progress %>%;"></div>
             </div>
           </div>
         </div>
@@ -74,7 +81,7 @@
           </div>
           <div class="progress-container">
             <div class="progress-bar">
-              <div class="progress-fill" style="width: <%= ((@last_checked_moon[:days_until_new_moon] || 0) / 14.0) * 100 %>%;"></div>
+              <div class="progress-fill" style="width: <%= new_progress %>%;"></div>
             </div>
           </div>
         </div>

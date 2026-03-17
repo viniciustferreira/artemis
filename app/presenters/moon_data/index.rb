@@ -4,11 +4,22 @@ class MoonData::Index < MoonData::Base
       phase: translate_phase(@moon_data[:phase][:name]),
       sign: translate_sign(@moon_data[:zodiac][:sign]),
       special_moon: translate_special_moon(@moon_data[:special_moon]),
-      days_until_full_moon: Date.parse(@moon_data[:next_phases][:full_moon].to_s).strftime("%Y%m%d").to_i - Time.now.strftime("%Y%m%d").to_i,
-      days_until_new_moon: Date.parse(@moon_data[:next_phases][:new_moon].to_s).strftime("%Y%m%d").to_i - Time.now.strftime("%Y%m%d").to_i,
+      days_until_full_moon: days_until(@moon_data[:next_phases][:full_moon]),
+      days_until_new_moon: days_until(@moon_data[:next_phases][:new_moon]),
       api_response: @moon_data,
       latitude: @latitude,
       longitude: @longitude
     }
+  end
+
+  private
+
+  def days_until(date_value)
+    return 0 if date_value.blank?
+
+    target_date = Date.parse(date_value.to_s)
+    [(target_date - Date.current).to_i, 0].max
+  rescue ArgumentError, TypeError
+    0
   end
 end
