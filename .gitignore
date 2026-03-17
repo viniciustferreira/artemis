@@ -38,3 +38,6 @@
 # Ignore vcr cassettes
 /spec/fixtures/vcr_cassettes/*
 !/spec/fixtures/vcr_cassettes/.keep
+
+# Ignore vendor/bundle
+/vendor/bundle
