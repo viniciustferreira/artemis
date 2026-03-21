@@ -1,9 +1,49 @@
-<div data-controller="location">
-  <div class="flex items-center justify-center min-h-screen">
-    <div class="text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-      <p class="mt-4 text-gray-600">Obtendo sua localização...</p>
-      <p class="text-sm text-gray-500">Precisamos da sua localização para continuar</p>
-    </div>
+<div class="loading-container">
+  <!-- Stars Background -->
+  <div class="stars">
+    <% 50.times do |i| %>
+      <div class="star" style="
+        left: <%= rand * 100 %>%;
+        top: <%= rand * 100 %>%;
+        animation-delay: <%= rand * 2 %>s;
+        animation-duration: <%= 1.5 + rand * 2 %>s;
+      "></div>
+    <% end %>
   </div>
+ <!-- Header -->
+  <header class="app-header">
+    <h1>🌙 Artemis</h1>
+    <p>Current Moon Phase Information</p>
+  </header>
+
+  <!-- Loading Animation -->
+  <div class="loading-icon"></div>
+  
+  <p class="loading-text">Locating you...</p>
+  <p class="loading-subtext">We need your location to show accurate moon data</p>
 </div>
+
+<script>
+  // Trigger location request on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          window.location.href = `/?lat=${lat}&lng=${lng}`;
+    
+     },
+        (error) => {
+          console.error("Location error:", error);
+          // Show error message instead of redirecting
+          document.querySelector('.loading-text').textContent = 'Location access denied';
+          document.querySelector('.loading-subtext').textContent = 'Please enable location services to see moon data';
+        }
+      );
+    } else {
+      document.querySelector('.loading-text').textContent = 'Location not supported';
+      document.querySelector('.loading-subtext').textContent = 'Your browser does not support geolocation';
+    }
+  });
+</script>
