@@ -54,7 +54,7 @@ class MoonData::Base
   def translate_phase(phase)
     translations = {
       new_moon: "Lua Nova",
-      waxing_crescent: "Crescente Crescente",
+      waxing_crescent: "Crescente",
       first_quarter: "Primeiro Quarto",
       waxing_gibbous: "Gibosa Crescente",
       full_moon: "Lua Cheia",
