@@ -16,6 +16,7 @@ class DailyLunarEmailJob < ApplicationJob
         presenter = MoonData::Index.new(api_response.with_indifferent_access, latitude: user.latitude, longitude: user.longitude).present
         @moon_data = MoonData.create(presenter)
       end
+      # Send mail immediately when the job runs (works for both inline and background workers)
       UserDataMailer.daily_moon_email(user, @moon_data).deliver_now
     end
   end

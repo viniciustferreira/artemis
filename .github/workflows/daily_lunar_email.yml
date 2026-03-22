@@ -1,0 +1,57 @@
+name: Daily lunar email (Neon)
+
+on:
+  schedule:
+    # Run at 16:00 and 17:00 UTC; workflow checks Europe/Stockholm local time and only proceeds at 18:00
+    - cron: "0 16,17 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  daily_email:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      SMTP_ADDRESS: ${{ secrets.SMTP_ADDRESS }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_DOMAIN: ${{ secrets.SMTP_DOMAIN }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_AUTHENTICATION: ${{ secrets.SMTP_AUTHENTICATION }}
+      APP_HOST: ${{ secrets.APP_HOST }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libpq-dev build-essential
+
+      - name: Install gems
+        run: |
+          bundle config set without 'development test' || true
+          bundle install --jobs 4 --retry 3
+
+      - name: Check local time (Europe/Stockholm)
+        run: |
+          echo "Europe/Stockholm now: $(TZ='Europe/Stockholm' date)"
+          hour=$(TZ='Europe/Stockholm' date +'%H')
+          echo "Local hour: $hour"
+          if [ "$hour" != "18" ]; then
+            echo "Not 18:00 Europe/Stockholm; exiting without running task."
+            exit 0
+          fi
+
+      - name: Run DB migrations
+        run: bundle exec rails db:migrate
+
+      - name: Run daily lunar mail task
+        run: bundle exec rails cron:daily_lunar_email
