@@ -60,7 +60,7 @@ class MoonData::Base
       full_moon: "Lua Cheia",
       waning_gibbous: "Gibosa Minguante",
       last_quarter: "Último Quarto",
-      waning_crescent: "Crescente Minguante"
+      waning_crescent: "Minguante"
     }
     translations[phase.gsub(" ", "_").downcase.to_sym] || phase
   end
