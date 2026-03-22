@@ -36,4 +36,5 @@ test:
 # ensure the database is located in a persisted volume.
 production:
   <<: *default
-  # database: path/to/persistent/storage/production.sqlite3
+  # Use DATABASE_URL in production (set as a GitHub secret in CI)
+  url: <%= ENV['DATABASE_URL'] %>
