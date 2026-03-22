@@ -20,6 +20,8 @@ jobs:
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       SMTP_AUTHENTICATION: ${{ secrets.SMTP_AUTHENTICATION }}
       APP_HOST: ${{ secrets.APP_HOST }}
+      DAILY_LUNAR_API_URL: ${{ secrets.DAILY_LUNAR_API_URL }}
+      ASTRO_API_KEY: ${{ secrets.ASTRO_API_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
 
     steps:
