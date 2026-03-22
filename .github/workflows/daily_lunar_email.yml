@@ -2,8 +2,8 @@ name: Daily lunar email (Neon)
 
 on:
   schedule:
-    # Run at 18:30 and 19:30 UTC so local 20:30 Europe/Stockholm proceeds (handles DST)
-    - cron: "30 18,19 * * *"
+    # Run at 20:00 and 21:00 UTC so local 22:00 Europe/Stockholm proceeds (handles DST)
+    - cron: "00 20,21 * * *"
   workflow_dispatch:
     inputs:
       force:
@@ -51,15 +51,17 @@ jobs:
         id: check_time
         run: |
           echo "Europe/Stockholm now: $(TZ='Europe/Stockholm' date)"
-          hour=$(TZ='Europe/Stockholm' date +'%H')
-          minute=$(TZ='Europe/Stockholm' date +'%M')
-          echo "Local hour: $hour, minute: $minute"
-          if [ "$hour" = "20" ] && [ "$minute" = "30" ]; then
+          now=$(TZ='Europe/Stockholm' date +%s)
+          target=$(TZ='Europe/Stockholm' date -d "$(TZ='Europe/Stockholm' date +%F) 22:00:00" +%s)
+          diff=$(( now>target ? now-target : target-now ))
+          echo "Now epoch: $now, Target epoch: $target, Diff seconds: $diff"
+          # allow 15 minutes = 900 seconds tolerance
+          if [ "$diff" -le 900 ]; then
             echo "run=true" >> $GITHUB_OUTPUT
-            echo "It's 20:30 — proceeding with task."
+            echo "Within 15 minutes of 22:00 — proceeding."
           else
             echo "run=false" >> $GITHUB_OUTPUT
-            echo "Not 20:30 Europe/Stockholm; skipping task."
+            echo "Not within 15 minutes of 22:00 Europe/Stockholm; skipping task."
           fi
 
       - name: Run DB migrations
