@@ -2,8 +2,8 @@ name: Daily lunar email (Neon)
 
 on:
   schedule:
-    # Run at 16:00 and 17:00 UTC; workflow checks Europe/Stockholm local time and only proceeds at 18:00
-    - cron: "0 16,17 * * *"
+    # Run at 18:30 and 19:30 UTC so local 20:30 Europe/Stockholm proceeds (handles DST)
+    - cron: "30 18,19 * * *"
   workflow_dispatch: {}
 
 jobs:
@@ -43,17 +43,24 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Check local time (Europe/Stockholm)
+        id: check_time
         run: |
           echo "Europe/Stockholm now: $(TZ='Europe/Stockholm' date)"
           hour=$(TZ='Europe/Stockholm' date +'%H')
-          echo "Local hour: $hour"
-          if [ "$hour" != "18" ]; then
-            echo "Not 18:00 Europe/Stockholm; exiting without running task."
-            exit 0
+          minute=$(TZ='Europe/Stockholm' date +'%M')
+          echo "Local hour: $hour, minute: $minute"
+          if [ "$hour" = "20" ] && [ "$minute" = "30" ]; then
+            echo "run=true" >> $GITHUB_OUTPUT
+            echo "It's 20:30 — proceeding with task."
+          else
+            echo "run=false" >> $GITHUB_OUTPUT
+            echo "Not 20:30 Europe/Stockholm; skipping task."
           fi
 
       - name: Run DB migrations
+        if: steps.check_time.outputs.run == 'true'
         run: bundle exec rails db:migrate
 
       - name: Run daily lunar mail task
+        if: steps.check_time.outputs.run == 'true'
         run: bundle exec rails cron:daily_lunar_email
