@@ -10,29 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_11_232855) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_22_004856) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "moon_data", force: :cascade do |t|
-    t.string "sign"
-    t.string "phase"
-    t.string "special_moon"
-    t.float "days_until_new_moon"
-    t.float "days_until_full_moon"
     t.jsonb "api_response"
+    t.datetime "created_at", null: false
+    t.integer "days_until_full_moon"
+    t.integer "days_until_new_moon"
     t.float "latitude"
     t.float "longitude"
-    t.datetime "created_at", null: false
+    t.string "phase"
+    t.string "sign"
+    t.string "special_moon"
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
+    t.datetime "created_at", null: false
+    t.string "email"
     t.float "latitude"
     t.float "longitude"
-    t.string "email"
-    t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 end
