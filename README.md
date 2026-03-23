@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Description: 
 
-Things you may want to cover:
+A moon cycle update asynchronous application.
+It sends a email to update the moon cycle and some other informations.
 
-* Ruby version
 
-* System dependencies
+<img width="1525" height="876" alt="image" src="https://github.com/user-attachments/assets/27b4e244-5b88-48bc-ac74-4dce82ebe69f" />
 
-* Configuration
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
