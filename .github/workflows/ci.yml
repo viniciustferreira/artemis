@@ -89,6 +89,12 @@ jobs:
           name: horusec_report
           path: reports/horusec_report.sarif
 
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/horusec_report.sarif
+          category: sast-report
+
   test:
     runs-on: ubuntu-latest
     # services:
