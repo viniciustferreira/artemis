@@ -5,6 +5,11 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  security-events: write
+  issues: write
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
