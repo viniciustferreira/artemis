@@ -38,3 +38,16 @@
 # Ignore vcr cassettes
 /spec/fixtures/vcr_cassettes/*
 !/spec/fixtures/vcr_cassettes/.keep
+
+# Ignore Google Calendar credentials and tokens
+/config/google_client_secret.json
+/tmp/google_calendar_token_*.yaml
+
+#ignore agent, claude, cursor, and windsurf files
+.agents/*
+.claude/*
+.cursor/*
+.windsurf/*
+GOOGLE_CALENDAR_SETUP.md
+IMPLEMENTATION_SUMMARY.md
+USAGE_EXAMPLES.md

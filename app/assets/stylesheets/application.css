@@ -318,3 +318,118 @@ body {
   color: var(--moon-gold);
   border: 1px solid rgba(251, 191, 36, 0.3);
 }
+
+/* Badge de status conectado (Google Calendar ativo) */
+.badge-connected {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* Badge de status desconectado (Google Calendar inativo) */
+.badge-disconnected {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--moon-text-muted);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Botão base: usado por todos os botões do app */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Botão primário: gradiente roxo-azul, usado em ações principais */
+.btn-primary {
+  background: linear-gradient(135deg, var(--moon-purple), var(--moon-blue));
+  color: white;
+}
+
+/* Botão dourado: usado para a ação do Google Calendar */
+.btn-google {
+  background: linear-gradient(135deg, var(--moon-gold), #f59e0b);
+  color: #0a0e17;
+}
+
+/* Botão de voltar: discreto, sem destaque visual */
+.btn-back {
+  color: var(--moon-text-muted);
+  background: transparent;
+}
+
+/* Label do campo de formulário (rótulo acima do input) */
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--moon-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+/* Espaçamento entre grupos de campos (label + input) */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Input de texto com estilo glassmorphism, igual ao card de lua */
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--moon-text);
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+/* Foco no input: destaca com a cor roxa do tema */
+.form-control:focus {
+  outline: none;
+  border-color: var(--moon-purple);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Mensagem flash de sucesso (ex: usuário criado, calendário conectado) */
+.flash-notice {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--moon-purple);
+}
+
+/* Mensagem flash de erro (ex: validação falhou, autorização cancelada) */
+.flash-alert {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+/* Grade de dados do usuário na tela de visualização */
+.user-info-grid {
+  display: grid;
+  gap: 1rem;
+}

@@ -1,0 +1,85 @@
+<div class="container">
+  <!-- Fundo de estrelas animadas (mesmo padrão da tela principal) -->
+  <div class="stars">
+    <% 50.times do |i| %>
+      <!-- Cada estrela tem posição e velocidade aleatórias para o efeito de brilho -->
+      <div class="star" style="
+        left: <%= rand * 100 %>%;
+        top: <%= rand * 100 %>%;
+        animation-delay: <%= rand * 2 %>s;
+        animation-duration: <%= 1.5 + rand * 2 %>s;
+      "></div>
+    <% end %>
+  </div>
+
+  <!-- Cabeçalho com o mesmo padrão da tela de lua -->
+  <header class="app-header">
+    <h1>🌙 Artemis</h1>
+    <p>Dados do Usuário</p>
+  </header>
+
+  <!-- Mensagens de retorno (sucesso ou erro) vindas de redirects -->
+  <% if flash[:notice] %>
+    <div class="flash flash-notice"><%= flash[:notice] %></div>
+  <% end %>
+  <% if flash[:alert] %>
+    <div class="flash flash-alert"><%= flash[:alert] %></div>
+  <% end %>
+
+  <!-- Card com os dados do usuário recém-criado, no mesmo estilo glassmorphism -->
+  <div class="moon-card">
+    <!-- Grade com os dados do usuário, reutilizando .data-item da tela principal -->
+    <div class="user-info-grid">
+      <!-- Exibe o nome do usuário em destaque dourado (igual à fase atual na tela de lua) -->
+      <div class="data-item">
+        <div class="data-item-label">Nome Completo</div>
+        <div class="data-item-value highlight"><%= @user.name %></div>
+      </div>
+
+      <!-- Exibe o e-mail do usuário -->
+      <div class="data-item">
+        <div class="data-item-label">E-mail</div>
+        <div class="data-item-value"><%= @user.email %></div>
+      </div>
+
+      <!-- Exibe o status de conexão com o Google Calendar -->
+      <div class="data-item">
+        <div class="data-item-label">Google Calendar</div>
+        <div class="data-item-value">
+          <% if @user.google_calendar_enabled? %>
+            <!-- Badge verde quando o Google Calendar já está conectado -->
+            <span class="badge badge-connected">✓ Conectado</span>
+          <% else %>
+            <!-- Badge cinza quando ainda não foi conectado -->
+            <span class="badge badge-disconnected">Não conectado</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão de conexão com Google Calendar (só aparece se ainda não estiver conectado) -->
+    <% unless @user.google_calendar_enabled? %>
+      <!-- data-controller conecta este bloco ao Stimulus controller google-calendar -->
+      <div style="text-align: center; margin-top: 2rem;"
+           data-controller="google-calendar">
+        <!-- Formulário que envia POST para a rota de autorização do Google Calendar -->
+        <!-- data-action dispara o método "connecting" do Stimulus ao enviar o form -->
+        <%= form_with url: "/google-calendar/authorize",
+            method: :post,
+            data: { action: "submit->google-calendar#connecting" } do |f| %>
+          <!-- Campo oculto que passa o ID do usuário para o controller de autorização -->
+          <%= hidden_field_tag :user_id, @user.id %>
+          <!-- Botão dourado que inicia o fluxo OAuth do Google -->
+          <%= f.submit "Conectar-se ao Calendário do Google",
+              class: "btn btn-google",
+              data: { google_calendar_target: "button" } %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Link para voltar à tela principal -->
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <%= link_to "← Voltar ao início", root_path, class: "btn btn-back" %>
+    </div>
+  </div>
+</div>

@@ -16,7 +16,14 @@ class DailyLunarEmailJob < ApplicationJob
         presenter = MoonData::Index.new(api_response.with_indifferent_access, latitude: user.latitude, longitude: user.longitude).present
         @moon_data = MoonData.create(presenter)
       end
+      
+      # Send daily email
       UserDataMailer.daily_moon_email(user, @moon_data).deliver_now
+      
+      # Schedule full moon event to Google Calendar
+      if @moon_data.days_until_full_moon == 10
+        FullMoonEventService.new(user, @moon_data).schedule_full_moon_event
+      end
     end
   end
 end

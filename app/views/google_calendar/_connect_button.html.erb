@@ -1,0 +1,72 @@
+<!-- app/views/google_calendar/_connect_button.html.erb -->
+<div class="google-calendar-integration">
+  <% if current_user.google_calendar_enabled? %>
+    <div class="alert alert-success">
+      <strong>✓ Google Calendar Conectado</strong>
+      <p>Seus eventos de lua cheia serão adicionados automaticamente ao seu calendário.</p>
+      
+      <%= form_with url: google_calendar_auth_path, method: :delete, local: true do %>
+        <%= submit_tag "Desconectar Google Calendar", class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <strong>🌙 Conectar Google Calendar</strong>
+      <p>Sincronize automaticamente seus eventos de lua cheia ao seu calendário Google.</p>
+      
+      <%= form_with url: google_calendar_auth_path, method: :post, local: true do %>
+        <%= hidden_field_tag :user_id, current_user.id %>
+        <%= submit_tag "Conectar Google Calendar", class: "btn btn-primary btn-sm" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .google-calendar-integration {
+    margin: 20px 0;
+  }
+  
+  .google-calendar-integration .alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .google-calendar-integration .alert strong {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .google-calendar-integration .alert p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .google-calendar-integration button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    margin-top: 10px;
+  }
+  
+  .btn-primary {
+    background-color: #4285f4;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2d6cd5;
+  }
+  
+  .btn-danger {
+    background-color: #d32f2f;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c62828;
+  }
+</style>

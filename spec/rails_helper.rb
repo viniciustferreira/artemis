@@ -25,7 +25,6 @@ require 'rspec/rails'
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 require 'rubygems'
-require 'test/unit'
 require 'vcr'
 
 begin
@@ -44,7 +43,10 @@ VCR.configure do |config|
   config.filter_sensitive_data('<SMTP_PASSWORD>') { ENV['SMTP_PASSWORD'] }
   config.filter_sensitive_data('<DAILY_LUNAR_API_KEY>') { ENV['DAILY_LUNAR_API_KEY'] }
 end
+
 RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+  
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')

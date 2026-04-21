@@ -37,6 +37,9 @@ gem "pg"
 
 gem "sidekiq-scheduler", "~> 6.0"
 
+# Google Calendar integration
+gem "google-api-client", "0.53.0", require: "google/apis/calendar_v3"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -52,6 +55,9 @@ group :development, :test do
   gem "rails-controller-testing"
 
   gem "vcr", "~> 6.0"
+
+  # Factory Bot for test fixtures
+  gem "factory_bot_rails", "~> 6.4"
 
   # gem "facets-glimmer", require: false
 

@@ -24,6 +24,11 @@
       <p>Informações sobre a Fase Atual da Lua</p>
     </header>
 
+    <!-- Botão que navega para o formulário de criação de usuário -->
+    <div style="text-align: right; margin-bottom: 1rem;">
+      <%= link_to "Criar Usuário", new_user_path, class: "btn btn-primary" %>
+    </div>
+
     <!-- Card Lua -->
     <div class="moon-card phase-<%= phase_css %>">
       <!-- Lua  -->

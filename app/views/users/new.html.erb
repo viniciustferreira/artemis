@@ -1,0 +1,66 @@
+<div class="container">
+  <!-- Fundo de estrelas animadas (mesmo padrão da tela principal) -->
+  <div class="stars">
+    <% 50.times do |i| %>
+      <!-- Cada estrela tem posição e velocidade aleatórias para o efeito de brilho -->
+      <div class="star" style="
+        left: <%= rand * 100 %>%;
+        top: <%= rand * 100 %>%;
+        animation-delay: <%= rand * 2 %>s;
+        animation-duration: <%= 1.5 + rand * 2 %>s;
+      "></div>
+    <% end %>
+  </div>
+
+  <!-- Cabeçalho com o mesmo padrão da tela de lua -->
+  <header class="app-header">
+    <h1>🌙 Artemis</h1>
+    <p>Criar Novo Usuário</p>
+  </header>
+
+  <!-- Card do formulário com o mesmo estilo glassmorphism da tela principal -->
+  <div class="moon-card" data-controller="user-form">
+    <!-- Exibe erros de validação do formulário, se houver -->
+    <% if @user.errors.any? %>
+      <div class="flash flash-alert">
+        <% @user.errors.full_messages.each do |msg| %>
+          <!-- Cada erro de validação é exibido em uma linha separada -->
+          <div><%= msg %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Formulário Rails que envia POST para /users (action create do controller) -->
+    <!-- data-action dispara o método handleSubmit do Stimulus ao enviar o form -->
+    <%= form_with model: @user, data: { action: "submit->user-form#handleSubmit" } do |f| %>
+      <!-- Campo de nome completo -->
+      <div class="form-group">
+        <%= f.label :name, "Nome Completo", class: "form-label" %>
+        <%= f.text_field :name,
+            class: "form-control",
+            placeholder: "Digite seu nome completo",
+            autofocus: true %>
+      </div>
+
+      <!-- Campo de e-mail -->
+      <div class="form-group">
+        <%= f.label :email, "E-mail", class: "form-label" %>
+        <%= f.email_field :email,
+            class: "form-control",
+            placeholder: "Digite seu e-mail" %>
+      </div>
+
+      <!-- Botão de submissão; o Stimulus vai desativá-lo durante o envio -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <%= f.submit "Criar Usuário",
+            class: "btn btn-primary",
+            data: { user_form_target: "submit" } %>
+      </div>
+    <% end %>
+
+    <!-- Link para voltar à tela principal sem criar usuário -->
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <%= link_to "← Voltar", root_path, class: "btn btn-back" %>
+    </div>
+  </div>
+</div>

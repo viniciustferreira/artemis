@@ -10,6 +10,16 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   resources :moon, controller: :moons, only: [ :index ]
+  root "moons#index"
+
+  # Rotas para criação e visualização de usuários
+  resources :users, only: [ :new, :create, :show ]
+
+  # Google Calendar authentication routes
+  post "google-calendar/authorize" => "google_calendar_auth#authorize"
+  get "google-calendar/callback" => "google_calendar_auth#callback"
+  delete "google-calendar/disconnect" => "google_calendar_auth#disconnect"
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
