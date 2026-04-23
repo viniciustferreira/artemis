@@ -152,7 +152,7 @@ jobs:
           DATABASE_URL: postgres://postgres:password@localhost:5432/my_app_test
           # REDIS_URL: redis://localhost:6379/0
           ASTRO_API_KEY: ${{ secrets.ASTRO_API_KEY }}
-        run: bin/rails db:create && rspec spec
+        run: rspec spec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v7
