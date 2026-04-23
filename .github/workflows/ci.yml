@@ -132,7 +132,7 @@ jobs:
           bundler-cache: true
 
       - name: run and show status of postgres
-        run: systemctl start postgresql && systemctl status postgresql
+        run: sudo systemctl start postgresql && sudo systemctl status postgresql
 
       - name: Run tests
         env:
