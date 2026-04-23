@@ -131,8 +131,8 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: status postgres
-        run: systemctl status postgresql
+      - name: run and show status of postgres
+        run: systemctl start postgresql && systemctl status postgresql
 
       - name: Run tests
         env:
