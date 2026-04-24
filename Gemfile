@@ -58,6 +58,8 @@ group :development, :test do
   gem "dotenv-rails"
 
   gem "faraday", "~> 2.14"
+
+  gem "test-unit", "3.0"
 end
 
 group :development do
