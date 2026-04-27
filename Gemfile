@@ -59,7 +59,7 @@ group :development, :test do
 
   gem "faraday", "~> 2.14"
 
-  gem "test-unit", "3.1.0"
+  gem "test-unit", "3.7.7"
 end
 
 group :development do
