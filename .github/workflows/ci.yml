@@ -108,7 +108,43 @@ jobs:
           env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
-              
+  sca:
+    needs: sast
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Run Semgrep and save JSON
+        run: |
+          pip install semgrep
+          semgrep scan --config="p/owasp-top-ten" --json > semgrep-results.json || true
+
+
+      - name: Save result as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: semgrep-results.json
+      
+      - name: 🛠️ Checkout do Código
+        uses: actions/checkout@v3
+
+      - name: Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+          out: 'reports' 
+          args: |
+                --nvdApiKey ${{ secrets.DC_KEY }}
+                --enableExperimental
+
+            
+      - name: Upload DC results
+        uses: actions/upload-artifact@master
+        with:
+           name: DC report
+           path: ${{github.workspace}}/reports
 
   test:
     runs-on: ubuntu-latest
